@@ -52,7 +52,6 @@ any-json split products.csv prod-{product_id}.json
 
 When only JSON features are used, conversion should not result in any data loss when using these formats.
 
-- cson
 - hjson
 - json
 - json5
@@ -90,7 +89,7 @@ usage: any-json [command] FILE [options] [OUT_FILE]
 any-json can be used to convert (almost) anything to JSON.
 
 This version supports:
-    cson, csv, hjson, ini, json, json5, toml, yaml
+    csv, hjson, ini, json, json5, toml, yaml
 
 This version has is beta support for:
     xls, xlsx

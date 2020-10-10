@@ -7,7 +7,6 @@
  * https://github.com/laktak/any-json
  */
 
-import * as cson from 'cson';
 import csv = require('fast-csv');
 import * as hjson from 'hjson';
 import * as ini from 'ini';
@@ -51,28 +50,16 @@ abstract class AbstractWorkbookConverter implements FormatConversion {
   public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
     const book = XLSX.read(text, { type: "binary" });
     if (book.SheetNames.length === 1) {
-      return XLSX.utils.sheet_to_json(book.Sheets[book.SheetNames[0]], {raw: true, defval: null});
+      return XLSX.utils.sheet_to_json(book.Sheets[book.SheetNames[0]], { raw: true, defval: null });
     }
 
     const result: any = {};
 
     for (let sheet of book.SheetNames) {
-      result[sheet] = XLSX.utils.sheet_to_json(book.Sheets[sheet], {raw: true, defval: null })
+      result[sheet] = XLSX.utils.sheet_to_json(book.Sheets[sheet], { raw: true, defval: null })
     }
 
     return result;
-  }
-}
-
-class CsonConverter implements FormatConversion {
-  readonly name: string = 'cson'
-
-  public async encode(value: any) {
-    return cson.stringify(value, undefined, 2)
-  }
-
-  public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
-    return cson.parse(text, reviver)
   }
 }
 
@@ -223,7 +210,6 @@ class YamlConverter implements FormatConversion {
 }
 
 const codecs = new Map([
-  new CsonConverter(),
   new CsvConverter(),
   new HjsonConverter(),
   new IniConverter(),
