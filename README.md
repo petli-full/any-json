@@ -1,5 +1,7 @@
 # any-json
 
+This is a folk of [any-json](https://github.com/any-json/any-json) without cson.
+
 any-json can be used to convert (almost) anything to and from JSON.
 
 [![NPM version](https://img.shields.io/npm/v/any-json.svg?style=flat-square)](http://www.npmjs.com/package/any-json)

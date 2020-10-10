@@ -1,5 +1,5 @@
 {
-  "name": "any-json",
+  "name": "any-json-no-cson",
   "description": "Convert (almost) anything to JSON.",
   "main": "./out/lib/index.js",
   "typings": "./out/lib/index.d.ts",

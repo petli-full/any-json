@@ -59,7 +59,7 @@ abstract class AbstractWorkbookConverter implements FormatConversion {
       result[sheet] = XLSX.utils.sheet_to_json(book.Sheets[sheet], { raw: true, defval: null })
     }
 
-    return result;
+    return [result];
   }
 }
 
@@ -89,7 +89,7 @@ class CsvConverter implements FormatConversion {
       const res: any[] = [];
       csv.fromString(text, { headers: true })
         .on("data", function (data) { res.push(data); })
-        .on("end", function () { resolve(res); });
+        .on("end", function () { resolve([res]); });
     });
   }
 }
@@ -102,7 +102,7 @@ class HjsonConverter implements FormatConversion {
   }
 
   public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
-    return hjson.parse(text)
+    return [hjson.parse(text)]
   }
 }
 
@@ -125,7 +125,7 @@ class IniConverter implements FormatConversion {
   public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
     const parsed = ini.parse(text)
     if (!this.looksLikeArray(parsed)) {
-      return parsed
+      return [parsed]
     }
 
     const array = Array(Object.getOwnPropertyNames(parsed).length)
@@ -133,7 +133,7 @@ class IniConverter implements FormatConversion {
       array[index] = parsed[index]
     }
 
-    return array;
+    return [array];
   }
 }
 
@@ -145,7 +145,7 @@ class JsonConverter implements FormatConversion {
   }
 
   public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
-    return JSON.parse(strip_json_comments(text), reviver)
+    return [JSON.parse(strip_json_comments(text), reviver)]
   }
 }
 
@@ -158,7 +158,7 @@ class Json5Converter implements FormatConversion {
   }
 
   public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
-    return json5.parse(text, reviver)
+    return [json5.parse(text, reviver)]
   }
 }
 
@@ -170,7 +170,7 @@ class TomlConverter implements FormatConversion {
   }
 
   public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
-    return toml.parse(text)
+    return [toml.parse(text)]
   }
 }
 
@@ -193,7 +193,7 @@ class XmlConverter implements FormatConversion {
   }
 
   public decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
-    return util.promisify(xml2js.parseString)(text)
+    return util.promisify(xml2js.parseString)(text).then(result => [result]);
   }
 }
 
@@ -205,7 +205,16 @@ class YamlConverter implements FormatConversion {
   }
 
   public async decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
-    return yaml.safeLoad(text)
+    // split it mutli doc
+    const docs = text.split(/^---/gm);
+    const results: (string | object | undefined)[] = [];
+    docs.forEach(doc => {
+      const docText = doc.trim();
+      if (docText !== "") {
+        results.push(yaml.safeLoad(docText));
+      }
+    });
+    return results;
   }
 }
 
