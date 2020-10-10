@@ -117,14 +117,6 @@ suite("Command Line Application", () => {
       const result = await main(args(basicJsonFile + " --output-format=yaml")) as string;
       assert.strictEqual(result, fs.readFileSync(path.join(__dirname, 'fixtures', 'out', 'product-set.yaml'), 'utf8'));
     })
-
-    test("output to file", async () => {
-      const outputFile = path.join("out", "test.cson")
-      const result = await main(args(`${basicJsonFile} ${outputFile}`)) as string;
-      assert.strictEqual(result, "");
-      const written = fs.readFileSync(outputFile, 'utf8')
-      assert.strictEqual(written, fs.readFileSync(path.join(__dirname, 'fixtures', 'out', 'product-set.cson'), 'utf8'));
-    })
   });
 
   suite("combine", () => {
@@ -135,7 +127,7 @@ suite("Command Line Application", () => {
     })
 
     test("to file", async () => {
-      const outputFile = 'out/test.yaml'
+      const outputFile = 'dist/test.yaml'
       const result = await main(args(`combine ${basicJsonFile} ${basicJsonFile} --out=${outputFile}`)) as string;
       assert.strictEqual(result, "");
       const written = fs.readFileSync(outputFile, 'utf8')
@@ -168,10 +160,10 @@ suite("Command Line Application", () => {
     test("can split flat csv", async () => {
       const file = path.join(__dirname, 'fixtures', 'out', 'product-set.csv');
 
-      const result = await main(args(`split ${file} out/{id}.json`));
+      const result = await main(args(`split ${file} dist/{id}.json`));
       assert.strictEqual(result,
-        `out/2.json written
-out/3.json written`);
+        `dist/2.json written
+dist/3.json written`);
     })
   });
 })

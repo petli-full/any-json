@@ -7,7 +7,8 @@
  * https://github.com/laktak/any-json
  */
 
-import csv = require('fast-csv');
+import { writeToString } from '@fast-csv/format';
+import { parseString } from '@fast-csv/parse';
 import * as hjson from 'hjson';
 import * as ini from 'ini';
 import * as json5 from 'json5';
@@ -69,16 +70,10 @@ class CsvConverter implements FormatConversion {
   public encode(value: any) {
     return new Promise<string>((resolve, reject) => {
       if (Array.isArray(value)) {
-        csv.writeToString(value, { headers: true }, function (err, result) {
-          if (err) {
-            reject(err);
-          }
-          else {
-            resolve(result);
-          }
-        })
-      }
-      else {
+        writeToString(value, { headers: true })
+          .then(result => resolve(result))
+          .catch(err => reject(err));
+      } else {
         reject("CSV encoding requires the object be an array.")
       }
     })
@@ -87,9 +82,10 @@ class CsvConverter implements FormatConversion {
   public decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
     return new Promise((resolve, reject) => {
       const res: any[] = [];
-      csv.fromString(text, { headers: true })
-        .on("data", function (data) { res.push(data); })
-        .on("end", function () { resolve([res]); });
+      parseString(text, { headers: true })
+        .on('data', row => res.push(row))
+        .on('error', (err) => reject(err))
+        .on('end', () => resolve([res]));
     });
   }
 }

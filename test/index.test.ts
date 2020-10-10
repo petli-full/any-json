@@ -29,7 +29,6 @@ function readOutputFixture(name: string, encoding = 'utf8') {
 suite('safe-formats', () => {
 
   const safe_formats = [
-    "cson",
     "hjson",
     "json",
     "json5",

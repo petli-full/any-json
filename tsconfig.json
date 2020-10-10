@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "declaration": true,
-        "outDir": "./out",
+        "outDir": "./dist",
         "target": "es2015",
         "module": "commonjs",
         "strict": true,
@@ -10,5 +10,8 @@
             "types"
         ]
     },
-    "include": ["lib", "test"]
+    "include": [
+        "lib",
+        "test"
+    ]
 }
