@@ -21,8 +21,8 @@ describe('XML name sanitize', function () {
             'bannana': { 'bannana/slice': 2 }
         };
         const output = {
-            'apple&#47;juice': 1,
-            'bannana': { 'bannana&#47;slice': 2 }
+            'apple_x002F_juice': 1,
+            'bannana': { 'bannana_x002F_slice': 2 }
         };
         assert.deepEqual(sanitizeXMLNames(input), output);
     });
@@ -46,9 +46,9 @@ describe('XML name sanitize', function () {
                     pear: 1,
                     orange: [
                         { grape: 2 },
-                        { 'white&#47;peach': 3 },
+                        { 'white_x002F_peach': 3 },
                     ],
-                    'bannana': { 'bannana&#47;slice': 2 }
+                    'bannana': { 'bannana_x002F_slice': 2 }
                 }
             ]
         };
