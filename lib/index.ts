@@ -21,6 +21,8 @@ import * as XLSX from 'xlsx';
 import * as xml2js from 'xml2js';
 import * as yaml from 'js-yaml';
 
+import { sanitizeXMLNames } from './utils';
+
 interface FormatConversion {
   readonly name: string
   encode(value: any): Promise<string>
@@ -185,7 +187,7 @@ class XmlConverter implements FormatConversion {
 
   public async encode(value: any) {
     const builder = new xml2js.Builder();
-    return builder.buildObject(value)
+    return builder.buildObject(sanitizeXMLNames(value))
   }
 
   public decode(text: string, reviver?: (key: any, value: any) => any): Promise<any> {
