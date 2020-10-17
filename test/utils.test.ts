@@ -36,7 +36,7 @@ describe('XML name sanitize', function () {
                         { grape: 2 },
                         { 'white/peach': 3 },
                     ],
-                    'bannana': { 'bannana/slice': 2 }
+                    'bannana': { 'bannana@slice': 2 }
                 }
             ]
         };
@@ -48,7 +48,7 @@ describe('XML name sanitize', function () {
                         { grape: 2 },
                         { 'white_x002F_peach': 3 },
                     ],
-                    'bannana': { 'bannana_x002F_slice': 2 }
+                    'bannana': { 'bannana_x0040_slice': 2 }
                 }
             ]
         };

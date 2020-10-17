@@ -18,9 +18,10 @@ export const deepTraverseKeys = (value: any, trans: (key: string) => string): an
 
 export const sanitizeXMLNames = (value: any): any => {
     return deepTraverseKeys(value, (key: string) => {
-        return key.replace(/[\/]/g, (m: string) => {
+        return key.replace(/[\/@]/g, (m: string) => {
             const escapes: { [key: string]: string } = {
                 '/': '_x002F_',
+                '@': '_x0040_',
             };
             return escapes[m];
         });
